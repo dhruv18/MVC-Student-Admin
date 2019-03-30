@@ -1,0 +1,172 @@
+﻿@model CrudOperations2.Models.student
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+                @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>student</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.idstudent, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.idstudent, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.idstudent, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.Std, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Std, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Std, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="form-group">
+
+        @Html.LabelFor(model => model.Std, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("STD", new List<SelectListItem>
+            {
+                new SelectListItem { Text = "1st", Value = "1", Selected=true},
+    new SelectListItem { Text = "2nd", Value = "2"},
+    new SelectListItem { Text = "3rd", Value = "3"},
+    new SelectListItem { Text = "4th", Value = "4"},
+    new SelectListItem { Text = "5th", Value = "5"},
+    new SelectListItem { Text = "6th", Value = "6"},
+    new SelectListItem { Text = "7th", Value = "7"},
+    new SelectListItem { Text = "8th", Value = "8"},
+    new SelectListItem { Text = "9th", Value = "9"},
+    new SelectListItem { Text = "10th", Value = "10"},
+    new SelectListItem { Text = "11th", Value = "11"},
+    new SelectListItem { Text = "12th", Value = "12"}
+
+    }, "--------------Select Standard--------------------", new { htmlAttributes = new { @class = " dropdown form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            Male: @Html.RadioButtonFor(m => m.Gender, "Male")
+            Female: @Html.RadioButtonFor(m => m.Gender, "Female")
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Percentage, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.hobby, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.hobby, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hobby, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.hobby, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <table>
+                @{
+                    int flag = 0;
+                    var hobbies = ViewBag.studhobby;
+                    string[] hobbiesArray = hobbies.Split(',');
+                    IList<CrudOperations2.Models.hobby> mylist = ViewBag.hobby;
+                    foreach (var h in mylist)
+                    {
+
+                        for (int i = 0; i < hobbiesArray.Length; i++)
+                        {
+                            string Temphobby = h.hobbiesName.ToString();
+                            if (Temphobby == hobbiesArray[i])
+                            {
+                                flag = 1;
+                                <tr>
+                                    <input type="checkbox" name="hobbies" value="@h.hobbiesName" checked="checked" />@h.hobbiesName
+
+                                </tr>
+                                break;
+                            }
+                            @*<tr>
+                                    <input type="checkbox" name="hobbies" value="@h.hobbiesName" />@h.hobbiesName
+
+                                </tr>*@
+
+                        }
+                        if (flag == 1)
+                        { flag = 0; continue; }
+                        else
+                        {
+                            <tr>
+                                <input type="checkbox" name="hobbies" value="@h.hobbiesName" />@h.hobbiesName
+
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+  
+    <div class="form-group">
+
+        @Html.LabelFor(model => model.userImage, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*<input type="file" value="@Url.Content(Convert.ToString(ViewBag.userImage))" @*src="@Url.Content(Convert.ToString(ViewBag.userImage))" name="file" />*@
+            <input type="file" src=@ViewBag.userImage value="@ViewBag.userImage" name="file" />
+            <img src="@Url.Content(Convert.ToString(ViewBag.userImage))" width="50" height="50" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

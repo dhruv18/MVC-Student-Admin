@@ -1,0 +1,67 @@
+﻿@model CrudOperations2.Models.student
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+@*<h2>Delete</h2>*@
+
+
+
+<div>
+    @*<h4>student</h4>
+        <hr />*@
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Are you sure you want to delete this?</h2>
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <img src="@Url.Content(Convert.ToString(Model.userImage))" class="img-thumbnail rounded-circle" width="100" height="100" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.idstudent)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.idstudent)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.Name)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.Name)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.Std)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.Std)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.Phone)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.Phone)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.Percentage)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.Percentage)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><span class="label"> @Html.DisplayNameFor(model => model.hobby)</span></div>
+                            <div class="col-6"><span class="label"> @Html.DisplayFor(model => model.hobby)</span></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" style="padding-left:25px;padding-right:25px;" value="Delete" onclick="location.href='@Url.Action("Index", "Student")'" class="btn btn-sm btn-danger"><i class="fas  fa-trash-alt"></i> Delete</button>
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-secondary  paddingLeftRight0 float-right" style=" padding-left: 5px; padding-right: 5px;" href="/Student/Index"><i class="fas fa-step-backward"></i> Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
