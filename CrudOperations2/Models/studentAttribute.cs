@@ -32,7 +32,7 @@ namespace CrudOperations2.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string Phone { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "    Gender Required")]
         public string Gender { get; set; }
 
         [Required]
