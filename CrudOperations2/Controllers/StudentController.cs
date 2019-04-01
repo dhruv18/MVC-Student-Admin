@@ -139,8 +139,9 @@ namespace CrudOperations2.Controllers
 
         // POST: Student/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public JsonResult Delete(int id, FormCollection collection)
         {
+            bool result = false;
             try
             {
                 using (testEntities sm = new testEntities  ())
@@ -149,14 +150,16 @@ namespace CrudOperations2.Controllers
                     sm.students.Remove(s);
                     sm.SaveChanges();
 
+                    result = true;
                     // TODO: Add delete logic here
 
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
+                    return Json(result,JsonRequestBehavior.AllowGet);
                 }
             }
             catch
             {
-                return View();
+                return null;
             }
         }
     }

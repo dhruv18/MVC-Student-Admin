@@ -249,6 +249,7 @@
     <Content Include="Template\vendor\mdi-font\css\material-design-iconic-font.min.css" />
     <Content Include="Template\vendor\select2\select2.min.css" />
     <Content Include="Template\vendor\select2\select2.min.js" />
+    <Content Include="MyImages\InternetSlowdown_Day.gif" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
