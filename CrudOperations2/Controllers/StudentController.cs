@@ -17,7 +17,7 @@ namespace CrudOperations2.Controllers
         {
             using (testEntities ts = new testEntities())
             {
-                
+                ViewBag.hobby = ts.hobbies.ToList();
                 return View(ts.students.ToList());
             }
         }

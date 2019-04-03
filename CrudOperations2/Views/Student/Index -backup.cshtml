@@ -1,0 +1,171 @@
+﻿@model IEnumerable<CrudOperations2.Models.student>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center">Student List</h2>
+
+@*<p>
+
+        <button class="btn btn-success" style="padding-left: 0px;padding-right: 0px;" value="Create" onclick="location.href='@Url.Action("Create", "Student")'"> <i class="fas fa-user-plus"></i> Create</button>
+    </p>*@
+<div class="page-wrapper">
+
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+
+                <th>
+                    @*@Html.DisplayNameFor(model => model.idstudent)*@
+                    <label>Id</label>
+                </th>
+                <th>
+
+                    <label>Name</label>
+                </th>
+                <th>
+
+                    <label>Std</label>
+                </th>
+                <th>
+
+                    <label>Phone</label>
+                </th>
+                <th>
+
+                    <label>Gender</label>
+                </th>
+                <th>
+
+                    <label>Marks(%)</label>
+                </th>
+                <th>
+
+                    <label>Hobby</label>
+                </th>
+                <th>
+
+                    <label>Image</label>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr class="table-info" id="row_@item.idstudent">
+                <td>
+                    @Html.DisplayFor(modelItem => item.idstudent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Std)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Percentage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hobby)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.userImage)*@
+                    <img src="@Url.Content(Convert.ToString(item.userImage))" class="img-fluid rounded-circle" width="50" height="50" />
+
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger", @style = "padding-left: 5px; padding-right: 5px;" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" }) |
+
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" })*@
+                    <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="/Student/Edit/@item.idstudent"><i class="fas  fa-edit"></i></a>
+                    <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="/Student/Details/@item.idstudent"><i class="fas fa-reorder"></i></a>
+                    @*<a class="btn btn-sm btn-danger" style="padding-right: 5px;padding-left: 5px;" href="/Student/Delete/@item.idstudent"><i class="fas  fa-minus-circle"></i></a>*@
+                    <a class="btn btn-sm btn-danger" style="padding-right: 5px;padding-left: 5px;" onclick="ConfirmDelete(@item.idstudent)" href="#"><i class="fas  fa-minus-circle"></i></a>
+
+                </td>
+            </tr>
+
+        }
+        @*hidden field for storing current employeeId*@
+        <input type="hidden" id="hiddenStudentId" />
+
+    </table>
+
+
+    @*Bootstrap Popup*@
+    <div class="modal" id="DeleteModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Delete Student</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure ? You want to delete this. </h4>
+
+                    <div style="text-align:center;display:none" id="loaderDiv">
+                        <img src="~/MyImages/InternetSlowdown_Day.gif" width="150" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="btn btn-success" onclick="DeleteStudent()">Confirm</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+</div>
+<script src="~/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    var ConfirmDelete = function (StudentId) {
+
+        
+        $("#hiddenStudentId").val(StudentId);
+        $("#DeleteModel").modal('show');
+
+    }
+
+    var DeleteStudent = function () {
+
+        $("#loaderDiv").show();
+
+        var StudId = $("#hiddenStudentId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/Student/Delete",
+            data: { id: StudId },
+            success: function (result) {
+                $("#loaderDiv").hide();
+                $("#DeleteModel").modal("hide");
+                //$("#row_" + StudId).remove();
+                $("#row_" + StudId).remove();
+            }
+
+        })
+
+    }
+</script>
+
