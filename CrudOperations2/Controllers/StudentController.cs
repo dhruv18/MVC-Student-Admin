@@ -12,13 +12,29 @@ namespace CrudOperations2.Controllers
 {
     public class StudentController : Controller
     {
+        public ActionResult DetailsPartial(int idstudent)
+        {
+            using (testEntities ts = new testEntities())
+            {
+
+
+                //return View(ts.students.Where(x => x.idstudent == idstudent).FirstOrDefault());
+
+                return PartialView("_TestEditPartialView", ts.students.Where(x => x.idstudent == idstudent).FirstOrDefault());
+            }
+           
+        }
         // GET: Student
         public ActionResult Index()
         {
             using (testEntities ts = new testEntities())
             {
+
+
+                ViewBag.Students = ts.students.ToList();
                 ViewBag.hobby = ts.hobbies.ToList();
-                return View(ts.students.ToList());
+                // return View(ts.students.ToList());
+                return View();
             }
         }
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CrudOperations2.Models.student>
+﻿@model CrudOperations2.Models.student
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
@@ -9,7 +9,13 @@
         <button class="btn btn-success" style="padding-left: 0px;padding-right: 0px;" value="Create" onclick="location.href='@Url.Action("Create", "Student")'"> <i class="fas fa-user-plus"></i> Create</button>
     </p>*@
 
-<a class="btn btn-sm btn-success  paddingLeftRight0" onclick="CreateModel()" href="#"><i class="fas fa-user-plus"></i> Create New</a>
+<a class="btn btn-sm btn-success  paddingLeftRight0" data-toggle="modal" data-target="#CreateUserModel" href="#"><i class="fas fa-user-plus"></i> Create New</a>
+
+
+
+@*hidden field for storing current employeeId*@
+<input type="hidden" id="hiddenStudentId" />
+
 <table id="MyDataTabel" class="display">
     <thead>
         <tr>
@@ -41,8 +47,12 @@
             <th></th>
         </tr>
     </thead>
-    @foreach (var item in Model)
+    @{
+        IList<CrudOperations2.Models.student> myStudentData = ViewBag.Students;
+    }
+    @foreach (var item in myStudentData)
     {
+
         <tr id="row_@item.idstudent">
             <td>
                 @Html.DisplayFor(modelItem => item.idstudent)
@@ -71,14 +81,19 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger", @style = "padding-left: 5px; padding-right: 5px;" }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" }) |
+        @Html.ActionLink("Details", "Details", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" }) |
 
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" })*@
+        @Html.ActionLink("Delete", "Delete", new { id = item.idstudent }, new { @class = "btn btn-sm btn-danger",@style = "padding-left: 5px; padding-right: 5px;" })*@
 
                 @*<a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="/Student/Edit/@item.idstudent"><i class="fas  fa-edit"></i></a>*@
-                <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" onclick="EditRecord(@item.idstudent)" href="#"><i class="fas  fa-edit"></i></a>
+                @*<a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" onclick="EditRecord(@item.idstudent)" href="#"><i class="fas  fa-edit"></i></a>*@
+                <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" onclick="EditRecords(@item.idstudent)" href="#"><i class="fas  fa-edit"></i></a>
 
-                <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="/Student/Details/@item.idstudent"><i class="fas  fa-list-alt"></i></a>
+
+
+                @*<a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="/Student/Details/@item.idstudent"><i class="fas  fa-list-alt"></i></a>*@
+                <a class="btn btn-sm btn-info" style="padding-right: 5px;padding-left: 5px;" href="#" onclick="DetailsPopup(@item.idstudent)"><i class="fas  fa-list-alt"></i></a>
+
                 @*<a class="btn btn-sm btn-danger" style="padding-right: 5px;padding-left: 5px;" href="/Student/Delete/@item.idstudent"><i class="fas  fa-minus-circle"></i></a>*@
                 <a class="btn btn-sm btn-danger" style="padding-right: 5px;padding-left: 5px;" onclick="ConfirmDelete(@item.idstudent)" href="#"><i class="fas  fa-minus-circle"></i></a>
             </td>
@@ -91,68 +106,70 @@
 </table>
 
 
-@*hidden field for storing current employeeId*@
-<input type="hidden" id="hiddenStudentId" />
-
-
-
 @*Bootstrap Popup For Create New User*@
-<div class="modal" id="EditModel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Create new Student</h3>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            @foreach (var item in Model) {
+
+<div class="modal fade" id="CreateUserModel">
+    <form id="myForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create new Student</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
                 <div class="modal-body">
                     @*<h4>Are you sure ? You want to Edit the record this. </h4>*@
                     <h4>Create New Student</h4>
-                    <form id="myForm">
+
+
+
                     <div class="row row-space">
                         <div class="col-6">
                             <div class="input-group">
-                                @Html.LabelFor(model => item.Name, htmlAttributes: new { @class = "label" })
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "label" })
                                 @*<input class="input--style-4" type="text" name="first_name">*@
-                                @Html.EditorFor(model => item.Name, new { htmlAttributes = new { @class = "input--style-4", @name = "first_name" } })
-                                @Html.ValidationMessageFor(model => item.Name, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "input--style-4", @name = "first_name", @id = "firstname" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group">
-                                @Html.LabelFor(model => item.Phone, htmlAttributes: new { @class = "label" })
-                                @Html.EditorFor(model => item.Phone, new { htmlAttributes = new { @class = "input--style-4", @name = "last_name" } })
-                                @Html.ValidationMessageFor(model => item.Phone, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "label" })
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "input--style-4", @name = "last_name", @id = "Phone" } })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-6">
                             <div class="input-group">
-                                @Html.LabelFor(model => item.Percentage, htmlAttributes: new { @class = "label" })
+                                @Html.LabelFor(model => model.Percentage, htmlAttributes: new { @class = "label" })
                                 <div class="input-group-icon">
-                                    @Html.EditorFor(model => item.Percentage, new { htmlAttributes = new { @class = "input--style-4", @name = "birthday" } })
-                                    @Html.ValidationMessageFor(model => item.Percentage, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "input--style-4", @name = "birthday", @id = "Percentage" } })
+                                    @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
                                     @*<i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>*@
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group">
-                                @Html.LabelFor(model => item.Gender, htmlAttributes: new { @class = "label" })
+                                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "label" })
                                 <div class="p-t-10">
+
                                     <label class="radio-container m-r-45">
                                         Male
-                                        @Html.RadioButtonFor(m => item.Gender, "Male")
+                                        @*@Html.RadioButtonFor(m => m.Gender, "Male")*@
                                         @*<input type="radio" checked="checked" name="gender">*@
+                                        <input type="radio" name="gender" value="male" checked>
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="radio-container">
                                         Female
-                                        @Html.RadioButtonFor(m => item.Gender, "Female")
+                                        @*@Html.RadioButtonFor(m => m.Gender, "Female")*@
+                                        <input type="radio" name="gender" value="female">
                                         <span class="checkmark"></span>
                                     </label>
-                                    @Html.ValidationMessageFor(model => item.Gender, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -160,14 +177,14 @@
                     <div class="row row-space">
                         <div class="col-12">
                             <div class="input-group">
-                                @Html.LabelFor(model => item.hobby, htmlAttributes: new { @class = "label" })
+                                @Html.LabelFor(model => model.hobby, htmlAttributes: new { @class = "label" })
                                 @{
                                     IList<CrudOperations2.Models.hobby> mylist = ViewBag.hobby;
                                     foreach (var h in mylist)
                                     {
                                         <label class="checkbox-inline"><input type="checkbox" name="hobbies" value="@h.hobbiesName" />@h.hobbiesName</label>
                                     }
-                                    @Html.ValidationMessageFor(model => item.hobby, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.hobby, "", new { @class = "text-danger" })
                                 }
                             </div>
                         </div>
@@ -208,30 +225,45 @@
                                     </label>
                                     <input id="imageBrowes" type="file" name="file" />
                                 </div>
-                                @Html.ValidationMessageFor(model => item.userImage, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.userImage, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
 
-
-
                     <div style="text-align:center;display:none" id="loaderDiv">
                         <img src="~/MyImages/InternetSlowdown_Day.gif" width="150" />
                     </div>
-                        </form>
+
                 </div>
-                                        break;
-                                    }
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <input type="reset" value="Submit" class="btn btn-success" id="btnSubmit" />
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@*Details Model Popup*@
+<div class="modal" id="DetailsMOdel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Details Student</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv">
+                
+            </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                <a href="#" class="btn btn-success" id="btnSubmit" onclick="DeleteStudent()">Submitt</a>
+                <a href="#" class="btn btn-default" id="cancel" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteStudent()">Confirm</a>
             </div>
         </div>
     </div>
 </div>
-
-
 
 
 
@@ -252,7 +284,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-default" id="cancel" data-dismiss="modal">Cancel</a>
                 <a href="#" class="btn btn-success" onclick="DeleteStudent()">Confirm</a>
             </div>
         </div>
@@ -260,7 +292,7 @@
 </div>
 
 
-</div>
+
 <!-- Normal -->
 <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />*
 
@@ -324,11 +356,17 @@
 
             $("#btnSubmit").click(function () {
                 debugger
+                $("#loaderDiv").show();
 
 
-                //var data = $("#myForm").serialize();
+                // var data = new FormData(this.form);
+
+                //  var data = $("#myForm").serialize();
                 var data = new FormData(this.form);
-
+                // var data = new FormData();
+                // var files = $("#imageBrowes").get(0).files;
+                //  data.append("file", files[0]);
+                // data.append("name",)
                 $.ajax({
 
                     type: "POST",
@@ -338,7 +376,9 @@
                     contentType: false,
                     success: function (response) {
 
-                        alert("you are done");
+                        $("#loaderDiv").hide();
+                        $("#CreateUserModel").modal("hide");
+
                     }
 
                 })
@@ -346,9 +386,29 @@
 
         })
 
-        var CreateModel = function () {
-            $("#EditModel").modal('show');
+        //For Editing the User()
+        var DetailsPopup = function (Idstudent) {
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Student/DetailsPartial",
+                data: { idstudent: Idstudent },
+                success: function (response) {
+
+                    $("#myModalBodyDiv").html(response);
+
+                    $("#DetailsMOdel").modal("show");
+
+
+                }
+
+            })
         }
+
+
+
+
 
         var ReadImage = function (file) {
             var reader = new FileReader;

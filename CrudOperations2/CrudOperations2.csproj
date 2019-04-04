@@ -296,6 +296,9 @@
     <Content Include="Template\vendor\select2\select2.min.css" />
     <Content Include="Template\vendor\select2\select2.min.js" />
     <Content Include="MyImages\InternetSlowdown_Day.gif" />
+    <Content Include="User-Images\Penguins192307596.jpg" />
+    <Content Include="User-Images\Penguins194659814.jpg" />
+    <Content Include="User-Images\Penguins195140833.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -344,10 +347,12 @@
     <Content Include="Views\Student\Create - Copy.cshtml" />
     <Content Include="Views\Student\Index -backup.cshtml" />
     <Content Include="Views\Shared\_LayoutIndex.cshtml" />
+    <Content Include="Views\Student\Index-back-item.cshtml" />
+    <Content Include="Views\Student\Index-back-model.cshtml" />
+    <Content Include="Views\Student\_TestEditPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="User-Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
